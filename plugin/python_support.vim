@@ -4,15 +4,22 @@ if !has('nvim')
 endif
 
 " command PythonSupport
-let g:python_support_python_venv = get(g:,'python_support_python3_venv', 1)
-let g:python_support_python_requirements = add(get(g:,'python_support_python3_requirements',[]),'pynvim')
+let g:python_support_python3_venv = get(g:,'python_support_python3_venv', 1)
+let g:python_support_python3_venv_system_site_pkgs = get(g:,'python_support_python3_venv_system_site_pkgs', 1)
+let g:python_support_python3_venv_name = get(g:,'python_support_python3_venv_name', 'venv')
+let g:python_support_python3_requirements = add(get(g:,'python_support_python3_requirements',[]),'pynvim')
 
 com! PythonSupportInitPython3 call s:python_support_init(3)
 
 func! s:python_support_init(v)
   split
   enew
-    let l:cmd = [split(globpath(&rtp,'autoload/python3_support.sh'),'\n')[0]] + [g:python3_host_prog, g:python_support_python3_venv] + g:python_support_python3_requirements
+    let l:cmd = [split(globpath(&rtp,'python3_support.sh'),'\n')[0]] +
+      \ ['--python', g:python3_host_prog] +
+      \ [g:python_support_python3_venv == 1 ? "--venv" : ""] +
+      \ [g:python_support_python3_venv_system_site_pkgs == 1 ? "--system-site-packages" : ""] +
+      \ ["--venv-name", g:python_support_python3_venv_name] +
+      \ g:python_support_python3_requirements
     exec '! ' . join(l:cmd, ' ')
     call s:init()
 endfunc
@@ -20,7 +27,7 @@ endfunc
 func! s:init()
   let l:python3 = ""
   if g:python_support_python3_venv
-      silent! let l:python3 = split(globpath(&rtp,'autoload/nvim_py3/bin/python'),'\n')[0]
+      silent! let l:python3 = split(globpath(&rtp,'venv_py3/bin/python'),'\n')[0]
       if l:python3 != ''
           let g:python3_host_prog = l:python3
       else
@@ -47,7 +54,7 @@ func! s:py3requirements(timer)
     if l:python == ''
         let l:python = 'python3'
     endif
-  let l:cmd = [l:python, split(globpath(&rtp,'autoload/python3_check.py'),'\n')[0]] + g:python_support_python3_requirements
+  let l:cmd = [l:python, split(globpath(&rtp,'python3_check.py'),'\n')[0]] + g:python_support_python3_requirements
   call jobstart(l:cmd,{'on_stdout':function('s:on_stdout'), 'on_stderr':function('s:on_stdout')})
 endfunc
 
