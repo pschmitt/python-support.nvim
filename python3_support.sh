@@ -23,11 +23,7 @@ then
           python_exec="$2"
           shift 2
           ;;
-        --venv|--virtualenv)
-          venv=1
-          shift
-          ;;
-        --venv-sys|--system-site-packages)
+        --venv-sys|--sys|--system-site-packages)
           venv_sys=1
           shift
           ;;
@@ -42,7 +38,7 @@ then
   done
 
   python_exec="${python_exec:-python3}"
-  venv_name="${venv_name:-nvim_py3}"
+  venv_name="${venv_name:-venv}"
 
   if [[ -n "$venv" ]]
   then
@@ -59,13 +55,9 @@ then
     pip install -U pip
     pip install wheel
     pip install "$@"
-  else
-    "$python_exec" -m pip install --user -U pip
-    "$python_exec" -m pip install --user wheel
-    "$python_exec" -m pip install --user "$@"
   fi
 
-  echo "init finished" >&2
+  echo "python_support: venv installation completed" >&2
 fi
 
 # vim: set ft=sh et ts=2 sw=2 :
