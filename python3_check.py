@@ -7,7 +7,6 @@ import pkg_resources
 from pkg_resources import DistributionNotFound, VersionConflict
 
 dependencies = sys.argv[1:]
-print(f"Checking deps: {dependencies}")
 
 try:
     # here, if a dependency is not met, a DistributionNotFound or VersionConflict
@@ -15,5 +14,6 @@ try:
     pkg_resources.require(dependencies)
 except DistributionNotFound:
     print(
-        "python3 module dependency missing, please execute ':PythonSupportInitPython3'"
+        "python3 module dependency missing, please execute ':PythonSupportInitPython3'",
+        file=sys.stderr,
     )
