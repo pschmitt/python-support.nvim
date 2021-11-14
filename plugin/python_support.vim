@@ -10,7 +10,7 @@ let g:python_support_python3_requirements = add(get(g:,'python_support_python3_r
 com! PythonSupportInitPython3 call s:python_support_init(3)
 
 func! s:python_support_init(v)
-  let l:cmd = [split(globpath(&rtp,'python3_support.sh'),'\n')[0]] +
+  let l:cmd = [split(globpath(&rtp, 'python3_support.sh'), '\n')[0]] +
     \ ['--python', g:python3_host_prog] +
     \ [g:python_support_python3_venv_system_site_pkgs == 1 ? "--system-site-packages" : ""] +
     \ ["--venv-name", g:python_support_python3_venv] +
@@ -54,12 +54,17 @@ func! s:py3requirements(timer)
     let l:python = 'python3'
   endif
 
-  let l:cmd = [l:python, split(globpath(&rtp,'python3_check.py'),'\n')[0]] + g:python_support_python3_requirements
-  call jobstart(l:cmd,{'on_stdout':function('s:on_stdout'), 'on_stderr':function('s:on_stdout')})
+  let l:cmd =
+    \ [l:python, split(globpath(&rtp, 'python3_check.py'), '\n')[0]] +
+    \ g:python_support_python3_requirements
+  call jobstart(l:cmd, {
+    \ 'on_stdout': function('s:on_stdout'),
+    \ 'on_stderr': function('s:on_stdout')
+    \ })
 endfunc
 
 func! s:on_stdout(job_id, data, event)
-  echom join(a:data,"\n")
+  echom join(a:data, "\n")
 endfunc
 
 call s:init()
