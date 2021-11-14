@@ -11,9 +11,6 @@ let g:python_support_python3_requirements = add(get(g:,'python_support_python3_r
 com! PythonSupportInitPython3 call s:python_support_init(3)
 
 func! s:python_support_init(v)
-  split
-  enew
-
   let l:cmd = [split(globpath(&rtp,'python3_support.sh'),'\n')[0]] +
     \ ['--python', g:python3_host_prog] +
     \ [g:python_support_python3_venv_system_site_pkgs == 1 ? "--system-site-packages" : ""] +
