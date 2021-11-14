@@ -17,7 +17,7 @@ func! s:python_support_init(v)
   let l:cmd = [split(globpath(&rtp,'python3_support.sh'),'\n')[0]] +
     \ ['--python', g:python3_host_prog] +
     \ [g:python_support_python3_venv_system_site_pkgs == 1 ? "--system-site-packages" : ""] +
-    \ ["--venv-name", g:python_support_python3_venv_name] +
+    \ ["--venv-name", g:python_support_python3_venv] +
     \ g:python_support_python3_requirements
 
   exec '! ' . join(l:cmd, ' ')
@@ -27,7 +27,7 @@ endfunc
 func! s:init()
   let l:python3 = ""
   if g:python_support_python3_venv
-    silent! let l:python3 = split(globpath(&rtp, g:python_support_python3_venv_name . '/bin/python'),'\n')[0]
+    silent! let l:python3 = split(globpath(&rtp, g:python_support_python3_venv . '/bin/python'),'\n')[0]
     if l:python3 != ''
       let g:python3_host_prog = l:python3
     else
