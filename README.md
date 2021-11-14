@@ -28,7 +28,7 @@ If you need some specific python package in your venv, let's say you need
 flake8, put this into your vimrc file. this plugin will check the
 requirements automatically, if requirements are not satisfied, a warning
 message will be fired by this plugin. It should be fixed after you execute
-`PythonSupportInitPython`.
+`PythonSupportInitPython3`.
 
 ```vim
 let g:python_support_python3_requirements = add(get(g:,'python_support_python3_requirements',[]),'flake8')
