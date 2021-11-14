@@ -27,17 +27,17 @@ func! s:init()
     if l:python3 != ''
       let g:python3_host_prog = l:python3
     else
-      echom 'python3 venv not initialized by python-support.nvim. Please execute PythonSupportInitPython3'
+      echom 'python-support.nvim: venv not initialized. Please run PythonSupportInitPython3'
     endif
   elseif executable('python3') && get(g:, 'python3_host_prog', '') == ''
     let g:python3_host_prog = 'python3'
   elseif get(g:, 'python3_host_prog', '') == ''
-    echom 'python3 executable not found for python_support.vim'
+    echom 'python-support.nvim: python3 executable not found'
   endif
 
   if get(g:, 'python3_host_prog', '') != ''
     " spawn python process to check requirements 1 second later
-    call timer_start(1000,function('s:py3requirements'))
+    call timer_start(1000, function('s:py3requirements'))
     " TODO Should we run UpdateRemotePlugins here?
     " UpdateRemotePlugins
   endif
