@@ -40,22 +40,19 @@ then
   python_exec="${python_exec:-python3}"
   venv_name="${venv_name:-venv}"
 
-  if [[ -n "$venv" ]]
+  rm -rf "$venv_name"
+  args=()
+  if [[ -n "$venv_sys" ]]
   then
-    rm -rf "$venv_name"
-    args=()
-    if [[ -n "$venv_sys" ]]
-    then
-      args+=(--system-site-packages)
-    fi
-    "$python_exec" -m venv "${args[@]}" "$venv_name"
-    # shellcheck: disable 1091
-    source "${venv_name}/bin/activate"
-
-    pip install -U pip
-    pip install wheel
-    pip install "$@"
+    args+=(--system-site-packages)
   fi
+  "$python_exec" -m venv "${args[@]}" "$venv_name"
+  # shellcheck: disable 1091
+  source "${venv_name}/bin/activate"
+
+  pip install -U pip
+  pip install wheel
+  pip install "$@"
 
   echo "python_support: venv installation completed" >&2
 fi
